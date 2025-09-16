@@ -1,0 +1,245 @@
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact Aaron</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Poppins', sans-serif;
+  background: linear-gradient(135deg, #0f172a, #1e293b);
+  color: #f8fafc;
+  line-height: 1.6;
+}
+
+header {
+  background: #0f172aee;
+  padding: 1rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  backdrop-filter: blur(10px);
+}
+
+header h1 {
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: #38bdf8;
+}
+
+nav a {
+  margin-left: 1.5rem;
+  text-decoration: none;
+  color: #f8fafc;
+  font-weight: 500;
+  transition: .3s;
+}
+
+nav a:hover {
+  color: #38bdf8;
+}
+
+section {
+  max-width: 700px;
+  margin: 4rem auto;
+  padding: 2rem;
+  text-align: center;
+  background: #1e293b;
+  border-radius: 16px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, .4);
+}
+
+section h2 {
+  font-size: 2.2rem;
+  margin-bottom: 1rem;
+  color: #38bdf8;
+}
+
+section p {
+  margin: .8rem 0;
+  font-size: 1.1rem;
+  color: #e2e8f0;
+}
+
+.contact-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.contact-form input,
+.contact-form textarea {
+  padding: .9rem;
+  border: none;
+  border-radius: 8px;
+  background: #334155;
+  color: #f8fafc;
+  font-size: 1rem;
+}
+
+.contact-form button {
+  padding: .9rem;
+  border: none;
+  border-radius: 8px;
+  background: #38bdf8;
+  color: #0f172a;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: .3s;
+}
+
+.contact-form button:hover {
+  background: #0ea5e9;
+}
+
+footer {
+  text-align: center;
+  padding: 1.5rem;
+  background: #0f172a;
+  color: #94a3b8;
+  font-size: .9rem;
+  margin-top: 3rem;
+}
+
+button#menu-btn {
+  display: none;
+  font-size: 1.8rem;
+  background: none;
+  border: none;
+  color: #38bdf8;
+  cursor: pointer;
+}
+
+@media (max-width: 768px) {
+  nav {
+    display: none;
+    flex-direction: column;
+    background: #1e293b;
+    position: absolute;
+    top: 70px;
+    right: 20px;
+    padding: 1rem;
+    border-radius: 8px;
+  }
+
+  nav a {
+    margin: 1rem 0;
+  }
+
+  button#menu-btn {
+    display: block;
+  }
+}
+
+</style>
+<script>
+  
+function handleFormSubmission() {
+  const contactForm = document.querySelector('.contact-form');
+  const submitButton = contactForm.querySelector('button[type="submit"]');
+
+  
+  contactForm.addEventListener('submit', (event) => {
+    
+    event.preventDefault();
+
+ 
+    const inputs = contactForm.querySelectorAll('input, textarea');
+    let allFieldsFilled = true;
+    inputs.forEach(input => {
+      if (!input.value.trim()) {
+        allFieldsFilled = false;
+       
+        input.style.border = '1px solid #ef4444';
+      } else {
+        input.style.border = 'none'; // Reset border
+      }
+    });
+
+    if (!allFieldsFilled) {
+      alert('Please fill out all fields before sending the message.');
+      return; 
+    }
+
+   
+    submitButton.textContent = 'Sending...';
+    submitButton.style.background = '#0ea5e9';
+    submitButton.disabled = true;
+
+    
+    setTimeout(() => {
+     
+      submitButton.textContent = 'Message Sent! ✔️';
+      submitButton.style.background = '#4ade80'; // Green color for success
+      submitButton.style.cursor = 'default';
+
+    
+      setTimeout(() => {
+        contactForm.reset();
+        submitButton.textContent = 'Send Message';
+        submitButton.style.background = '#38bdf8';
+        submitButton.disabled = false;
+      }, 3000); 
+    }, 2000); 
+  });
+}
+
+
+function addInputHoverEffect() {
+  const inputs = document.querySelectorAll('.contact-form input, .contact-form textarea');
+  inputs.forEach(input => {
+    input.addEventListener('focus', () => {
+      input.style.boxShadow = '0 0 0 2px #38bdf8';
+    });
+    input.addEventListener('blur', () => {
+      input.style.boxShadow = 'none';
+    });
+  });
+}
+
+
+document.addEventListener('DOMContentLoaded', () => {
+  handleFormSubmission();
+  addInputHoverEffect();
+});
+</script>
+<body>
+  <header>
+    <h1>Aaron</h1>
+    <button id="menu-btn">☰</button>
+    <nav>
+      <a href="about.html">About</a>
+      <a href="projects.html">Projects</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+  </header>
+
+  <section>
+    <h2>Contact Me</h2>
+    <p>Email: <a href="mailto:aaron@example.com">aaron@example.com</a></p>
+    <p>Location: Bangalore, India</p>
+    <form class="contact-form">
+      <input type="text" placeholder="Your Name" required>
+      <input type="email" placeholder="Your Email" required>
+      <textarea placeholder="Your Message" rows="5" required></textarea>
+      <button type="submit">Send Message</button>
+    </form>
+  </section>
+
+  <footer>© 2025 Aaron. Built with ❤️ and code.</footer>
+  <script src="script.js"></script>
+</body>
+</html>
+<!--code like 64-85 chat gpt-->

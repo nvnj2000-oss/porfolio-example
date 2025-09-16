@@ -1,0 +1,279 @@
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About Aaron</title>
+  <style>
+    *{margin:0;
+    padding:0;
+    box-sizing:border-box;
+    }
+    body{font-family:'Poppins',sans-serif;background:linear-gradient(135deg,#0f172a,#1e293b);
+    color:#f8fafc;
+    line-height:1.7;
+  }
+    header{background:#0f172aee;
+      padding:1rem 2rem;display:flex;
+      justify-content:space-between;
+      align-items:center;position:sticky;
+      top:0;z-index:1000;
+      backdrop-filter:blur(10px)
+    }
+    header h1{font-size:1.8rem;
+      font-weight:800;
+      color:#38bdf8
+    }
+    nav a{margin-left:1.5rem;
+      text-decoration:none;
+      color:#f8fafc;
+      font-weight:500;
+      transition:.3s
+    }
+    nav a:hover
+    {
+    color:#38bdf8
+    }
+    section{max-width:900px;
+      margin:3rem auto;
+      padding:2rem;
+      text-align:center;background:#1e293b;
+      border-radius:16px;
+      box-shadow:0 8px 25px rgba(0,0,0,.4);
+      opacity:0;
+      transform:translateY(40px);
+      transition:all .8s}
+    section.show{opacity:1;
+      transform:translateY(0)
+    }
+    section h2{font-size:2.2rem;
+      margin-bottom:1rem;
+      color:#38bdf8
+    }
+    section p{margin:1rem 0;
+      font-size:1.1rem;
+      color:#e2e8f0;
+    }
+    footer{text-align:center;
+      padding:1.5rem;
+      background:#0f172a;
+      color:#94a3b8;
+      font-size:.9rem;
+      margin-top:3rem
+    }
+    button#menu-btn{display:none;
+      font-size:1.8rem;
+      background:none;
+      border:none
+      ;color:#38bdf8;
+      cursor:pointer
+    }
+    @media(max-width:768px)
+    {
+      nav{display:none;
+        flex-direction:column;
+        background:#1e293b;
+        position:absolute;
+        top:70px;
+        right:20px;
+        padding:1rem;
+        border-radius:8px
+      }
+      nav a{
+        margin:1rem 0
+      }
+      button#menu-btn{
+        display:block
+      }
+    }
+  </style>
+  <script>
+   
+function random(min, max) {
+  return Math.random() * (max - min) + min;
+}
+const crazyBackground = {
+  particles: [],
+  container: document.createElement('div'),
+
+  init() {
+    this.container.style.cssText = `
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: -1;
+      overflow: hidden;
+    `;
+    document.body.appendChild(this.container);
+
+    // Create a bunch of particles
+    for (let i = 0; i < 50; i++) {
+      this.createParticle();
+    }
+    this.animate();
+  },
+
+  createParticle() {
+    const particle = document.createElement('div');
+    const size = random(2, 8);
+    particle.style.cssText = `
+      position: absolute;
+      background: linear-gradient(45deg, #38bdf8, #f8fafc);
+      opacity: ${random(0.1, 0.5)};
+      border-radius: 50%;
+      width: ${size}px;
+      height: ${size}px;
+      left: ${random(0, window.innerWidth)}px;
+      top: ${random(0, window.innerHeight)}px;
+      transition: transform 10s linear;
+    `;
+    this.container.appendChild(particle);
+    this.particles.push({
+      element: particle,
+      vx: random(-0.5, 0.5),
+      vy: random(-0.5, 0.5)
+    });
+  },
+
+  animate() {
+    this.particles.forEach(p => {
+      let {
+        element,
+        vx,
+        vy
+      } = p;
+      let left = parseFloat(element.style.left);
+      let top = parseFloat(element.style.top);
+
+      left += vx;
+      top += vy;
+
+      // Wrap particles around the screen
+      if (left > window.innerWidth || left < 0) p.vx *= -1;
+      if (top > window.innerHeight || top < 0) p.vy *= -1;
+
+      element.style.left = `${left}px`;
+      element.style.top = `${top}px`;
+    });
+
+    requestAnimationFrame(() => this.animate());
+  }
+};
+
+
+const mouseTrail = {
+  textPool: 'AARON',
+  init() {
+    document.addEventListener('mousemove', (e) => this.createTrailElement(e.clientX, e.clientY));
+  },
+
+  createTrailElement(x, y) {
+    const trail = document.createElement('span');
+    trail.textContent = this.textPool[Math.floor(random(0, this.textPool.length))];
+    document.body.appendChild(trail);
+
+    trail.style.cssText = `
+      position: absolute;
+      left: ${x}px;
+      top: ${y}px;
+      color: #38bdf8;
+      font-size: ${random(10, 20)}px;
+      opacity: 1;
+      transform: translate(-50%, -50%) rotate(${random(0, 360)}deg);
+      pointer-events: none;
+      animation: fadeOutAndShrink 1.5s forwards ease-out;
+      will-change: transform, opacity;
+    `;
+
+  
+    trail.addEventListener('animationend', () => trail.remove());
+  }
+};
+
+
+const styleSheet = document.createElement("style");
+styleSheet.textContent = `
+  @keyframes fadeOutAndShrink {
+    0% {
+      transform: translate(-50%, -50%) scale(1) rotate(0deg);
+      opacity: 1;
+    }
+    100% {
+      transform: translate(${random(-200, 200)}px, ${random(-200, 200)}px) scale(0) rotate(${random(100, 500)}deg);
+      opacity: 0;
+    }
+  }
+`;
+document.head.appendChild(styleSheet);
+
+
+
+const glitchEffect = {
+  init() {
+    const navLinks = document.querySelectorAll('nav a');
+    navLinks.forEach(link => {
+      link.addEventListener('mouseenter', () => this.addGlitch(link));
+      link.addEventListener('mouseleave', () => this.removeGlitch(link));
+    });
+  },
+
+  addGlitch(element) {
+    element.dataset.text = element.textContent;
+    element.innerHTML = `<span class="glitch">${this.scrambleText(element.textContent)}</span>`;
+    element.classList.add('glitching');
+  },
+
+  removeGlitch(element) {
+    element.innerHTML = element.dataset.text;
+    element.classList.remove('glitching');
+  },
+
+  scrambleText(text) {
+    let scrambledText = '';
+    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+=-{}[]:;"\'|\\<,>.?/';
+    for (let i = 0; i < text.length; i++) {
+      scrambledText += chars.charAt(Math.floor(Math.random() * chars.length));
+    }
+    return scrambledText;
+  }
+};
+
+
+document.addEventListener('DOMContentLoaded', () => {
+  crazyBackground.init();
+  mouseTrail.init();
+  glitchEffect.init();
+});
+  </script>
+</head>
+<body>
+  <header>
+    <h1>Aaron</h1>
+    <button id="menu-btn">☰</button>
+    <nav>
+      <a href="about.html">About</a>
+      <a href="projects.html">Projects</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+  </header>
+
+  <section>
+    <h2>About Me</h2>
+    <p>Hi, I’m Aaron an 18-year-old coder from Bangalore. I’m a first-year BCA student at Christ University Yeshwanthpur in class 1 BCA B.</p>
+    <p>I’ve been coding since high school, experimenting with websites, apps, and games. My passion is solving problems with clean, efficient code.</p>
+    <p>Outside of coding, I enjoy playing chess, listening to electronic music, and testing out new tech gadgets. I aim to become a full-stack developer and build projects that impact lives.</p>
+    <p>Fun fact: I once built a small game that kept my classmates hooked for weeks!</p>
+  </section>
+  <script>
+    const nav=document.querySelector('nav');
+    const menuBtn=document.getElementById('menu-btn');
+    menuBtn.addEventListener('click',()=>{nav.style.display=nav.style.display==='flex'?'none':'flex'});
+    const section=document.querySelector('section');
+    function reveal(){const top=section.getBoundingClientRect().top;if(top<window.innerHeight*0.85){section.classList.add('show')}} 
+    window.addEventListener('scroll',reveal);window.addEventListener('load',reveal);
+  </script>
+</body>
+</html>
+<!--code line 50-102 chat gpt-->

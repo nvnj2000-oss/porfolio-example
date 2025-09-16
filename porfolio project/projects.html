@@ -1,0 +1,235 @@
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aaron's Projects</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Poppins', sans-serif;
+  background: linear-gradient(135deg, #1e293b, #0f172a);
+  color: #f8fafc;
+  line-height: 1.6;
+}
+
+header {
+  background: #0f172aee;
+  padding: 1rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  backdrop-filter: blur(10px);
+}
+
+header h1 {
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: #38bdf8;
+}
+
+nav a {
+  margin-left: 1.5rem;
+  text-decoration: none;
+  color: #f8fafc;
+  font-weight: 500;
+  transition: .3s;
+}
+
+nav a:hover {
+  color: #38bdf8;
+}
+
+section {
+  max-width: 1100px;
+  margin: 3rem auto;
+  padding: 0 1rem;
+  text-align: center;
+}
+
+section h2 {
+  font-size: 2.4rem;
+  margin-bottom: 2rem;
+  color: #38bdf8;
+  font-weight: 700;
+}
+
+.project-grid {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 2rem;
+}
+
+.project-grid li {
+  background: #1e293b;
+  padding: 2rem;
+  border-radius: 16px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, .4);
+  transition: transform .3s, box-shadow .3s;
+  text-align: left;
+}
+
+.project-grid li h3 {
+  color: #38bdf8;
+  margin-bottom: .5rem;
+}
+
+.project-grid li p {
+  color: #e2e8f0;
+  font-size: 1rem;
+}
+
+.project-grid li:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, .6);
+}
+
+footer {
+  text-align: center;
+  padding: 1.5rem;
+  background: #0f172a;
+  color: #94a3b8;
+  font-size: .9rem;
+  margin-top: 3rem;
+}
+
+button#menu-btn {
+  display: none;
+  font-size: 1.8rem;
+  background: none;
+  border: none;
+  color: #38bdf8;
+  cursor: pointer;
+}
+
+@media (max-width: 768px) {
+  nav {
+    display: none;
+    flex-direction: column;
+    background: #1e293b;
+    position: absolute;
+    top: 70px;
+    right: 20px;
+    padding: 1rem;
+    border-radius: 8px;
+  }
+
+  nav a {
+    margin: 1rem 0;
+  }
+
+  button#menu-btn {
+    display: block;
+  }
+}
+</style>
+<script>
+function glitchText(element) {
+  if (!element.dataset.original) {
+    element.dataset.original = element.textContent;
+  }
+  const originalText = element.dataset.original;
+  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+=-{}[]:;"\'|\\<,>.?/';
+  let glitchCount = 0;
+  
+  const interval = setInterval(() => {
+    let newText = '';
+    for (let i = 0; i < originalText.length; i++) {
+      if (Math.random() < 0.2) {
+        newText += chars.charAt(Math.floor(Math.random() * chars.length));
+      } else {
+        newText += originalText[i];
+      }
+    }
+    element.textContent = newText;
+    
+    glitchCount++;
+    if (glitchCount > 10) {
+      clearInterval(interval);
+      element.textContent = originalText;
+    }
+  }, 50);
+}
+
+function handleProjectHover() {
+  const projectItems = document.querySelectorAll('.project-grid li');
+  projectItems.forEach(item => {
+    const title = item.querySelector('h3');
+    item.addEventListener('mouseenter', () => {
+      glitchText(title);
+    });
+  });
+}
+
+function revealProjectsOnScroll() {
+  const projectItems = document.querySelectorAll('.project-grid li');
+  const observer = new IntersectionObserver((entries, observer) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, {
+    threshold: 0.2 
+  });
+  projectItems.forEach((item, index) => {
+    item.style.transitionDelay = `${index * 0.2}s`;
+    observer.observe(item);
+  });
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  handleProjectHover();
+  revealProjectsOnScroll();
+});
+</script>
+
+<body>
+  <header>
+    <h1>Aaron</h1>
+    <button id="menu-btn">☰</button>
+    <nav>
+      <a href="about.html">About</a>
+      <a href="projects.html">Projects</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+  </header>
+
+  <section>
+    <h2>My Projects</h2>
+    <ul class="project-grid">
+      <li>
+        <h3>Portfolio Website</h3>
+        <p>A fully responsive portfolio (this one!) built with HTML, CSS, JS, and PHP backend integration.</p>
+      </li>
+      <li>
+        <h3>Weather App</h3>
+        <p>A JavaScript app that fetches live weather data using APIs. Shows temperature, humidity, and forecast.</p>
+      </li>
+      <li>
+        <h3>Task Manager</h3>
+        <p>A to-do app using PHP + SQL where users can add, delete, and track tasks in real-time.</p>
+      </li>
+      <li>
+        <h3>Mini Game</h3>
+        <p>A browser-based game made with pure JavaScript that became a hit among my classmates.</p>
+      </li>
+    </ul>
+  </section>
+
+  <footer>© 2025 Aaron. Built with ❤️ and code.</footer>
+  <script src="script.js"></script>
+</body>
+</html>
+<!--code line 25-127 chat gpt-->
